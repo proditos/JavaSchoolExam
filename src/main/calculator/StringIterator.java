@@ -6,11 +6,11 @@ import java.util.NoSuchElementException;
 /**
  * @author Vladislav Konovalov
  */
-public class ElementIterator implements Iterator<String> {
+public class StringIterator implements Iterator<String> {
     private final String expr;
     private int index = 0;
 
-    public ElementIterator(String expr) {
+    public StringIterator(String expr) {
         if (!expr.matches("[+\\-*/().\\d\\s]+"))
             this.expr = null;
         else
