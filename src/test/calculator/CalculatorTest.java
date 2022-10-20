@@ -10,7 +10,7 @@ public class CalculatorTest {
     private final Calculator calculator = new CalculatorImpl();
 
     @Test
-    public void evaluate() {
+    public void evaluate0() {
         String input = "2+3";
         String expectedResult = "5";
 
@@ -21,7 +21,7 @@ public class CalculatorTest {
 
     @Test
     public void evaluate1() {
-        String input = "4-6";
+        String input = "4-(6)";
         String expectedResult = "-2";
 
         String result = calculator.evaluate(input);
@@ -31,7 +31,7 @@ public class CalculatorTest {
 
     @Test
     public void evaluate2() {
-        String input = "2*3";
+        String input = "+2*3";
         String expectedResult = "6";
 
         String result = calculator.evaluate(input);
@@ -41,7 +41,7 @@ public class CalculatorTest {
 
     @Test
     public void evaluate3() {
-        String input = "12/3";
+        String input = "12/(+3)";
         String expectedResult = "4";
 
         String result = calculator.evaluate(input);
@@ -51,8 +51,8 @@ public class CalculatorTest {
 
     @Test
     public void evaluate4() {
-        String input = "2+3*4";
-        String expectedResult = "14";
+        String input = "3/2*2/3";
+        String expectedResult = "1";
 
         String result = calculator.evaluate(input);
 
@@ -91,8 +91,8 @@ public class CalculatorTest {
 
     @Test
     public void evaluate8() {
-        String input = "22/4*2.159";
-        String expectedResult = "11.8745";
+        String input = "22/4*2.113573";
+        String expectedResult = "11.6247";
 
         String result = calculator.evaluate(input);
 
@@ -181,8 +181,8 @@ public class CalculatorTest {
 
     @Test
     public void evaluate17() {
-        String input = "5--41-6";
-        String expectedResult = null;
+        String input = "-22/4*2.113573";
+        String expectedResult = "-11.6247";
 
         String result = calculator.evaluate(input);
 
@@ -191,8 +191,8 @@ public class CalculatorTest {
 
     @Test
     public void evaluate18() {
-        String input = "5**41-6";
-        String expectedResult = null;
+        String input = "2*(-3+15/3)";
+        String expectedResult = "4";
 
         String result = calculator.evaluate(input);
 
@@ -201,7 +201,17 @@ public class CalculatorTest {
 
     @Test
     public void evaluate19() {
-        String input = "5//41-6";
+        String input = "-5+3";
+        String expectedResult = "-2";
+
+        String result = calculator.evaluate(input);
+
+        Assert.assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void evaluate20() {
+        String input = "12*(5-1))";
         String expectedResult = null;
 
         String result = calculator.evaluate(input);
