@@ -11,10 +11,10 @@ public class StringIterator implements Iterator<String> {
     private int index = 0;
 
     public StringIterator(String expr) {
-        if (!expr.matches("[+\\-*/().\\d\\s]+"))
+        if (!expr.matches("[+\\-*/().\\d]+"))
             this.expr = null;
         else
-            this.expr = expr.replaceAll("\\s", "");
+            this.expr = expr;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class StringIterator implements Iterator<String> {
                 break;
         }
         number = number.substring(0, numberLength);
-        while (number.endsWith("."))
+        while (number.endsWith(".") || number.matches(".*\\.{2,}.*"))
             number = number.substring(0, number.length() - 1);
         return number;
     }
