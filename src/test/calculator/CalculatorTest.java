@@ -1,5 +1,7 @@
 package calculator;
 
+import calculator.api.Calculator;
+import calculator.impl.CalculatorImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,8 +53,8 @@ public class CalculatorTest {
 
     @Test
     public void evaluate4() {
-        String input = "3/2*2/3";
-        String expectedResult = "1";
+        String input = "12+()+3";
+        String expectedResult = null;
 
         String result = calculator.evaluate(input);
 
@@ -111,7 +113,7 @@ public class CalculatorTest {
 
     @Test
     public void evaluate10() {
-        String input = "- 12)1//(";
+        String input = "(2+3)(4+5)";
         String expectedResult = null;
 
         String result = calculator.evaluate(input);
