@@ -1,5 +1,7 @@
-package calculator;
+package calculator.impl;
 
+import calculator.StringIterator;
+import calculator.api.Calculator;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

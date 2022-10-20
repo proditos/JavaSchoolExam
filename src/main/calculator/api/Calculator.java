@@ -1,4 +1,4 @@
-package calculator;
+package calculator.api;
 
 /**
  * @author Vladislav Konovalov
