@@ -218,4 +218,14 @@ public class CalculatorTest {
 
         Assert.assertEquals(expectedResult, result);
     }
+
+    @Test
+    public void evaluate21() {
+        String input = "-(2+3)";
+        String expectedResult = "-5";
+
+        String result = calculator.evaluate(input);
+
+        Assert.assertEquals(expectedResult, result);
+    }
 }
