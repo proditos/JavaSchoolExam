@@ -29,9 +29,14 @@ public class ValidatorImpl implements Validator {
 
     private boolean isNumbersInvalid(String expr) {
         String[] withoutNumbers = expr.split("\\d+(\\.\\d+)?");
-        for (String s : withoutNumbers) {
-            if (s.matches("[\\d.]*"))
+        for (int i = 0; i < withoutNumbers.length; i++) {
+            String element = withoutNumbers[i];
+            if (element.isEmpty() || element.contains(".")) {
+                if (i == 0 && Character.isDigit(expr.charAt(0))) {
+                    continue;
+                }
                 return true;
+            }
         }
         return false;
     }
