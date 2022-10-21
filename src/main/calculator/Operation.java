@@ -44,7 +44,7 @@ public enum Operation {
     static {
         Map<String, Operation> map = new HashMap<>();
         for (Operation operation : Operation.values()) {
-            map.put(operation.getSign(), operation);
+            map.put(operation.toString(), operation);
         }
         OPERATION_MAP = Collections.unmodifiableMap(map);
     }
@@ -54,7 +54,8 @@ public enum Operation {
         this.priority = priority;
     }
 
-    public String getSign() {
+    @Override
+    public String toString() {
         return sign;
     }
 
