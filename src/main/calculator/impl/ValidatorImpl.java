@@ -12,8 +12,9 @@ public class ValidatorImpl implements Validator {
     public boolean isValid(String expr) {
         if (expr == null || expr.isEmpty()) return false;
         if (isSymbolsInvalid(expr)) return false;
+        if (isNumbersInvalid(expr)) return false;
         if (isParenthesesInvalid(expr)) return false;
-        return true;
+        return !isOperationsInvalid(expr);
     }
 
     private boolean isSymbolsInvalid(String expr) {
@@ -24,6 +25,15 @@ public class ValidatorImpl implements Validator {
             symbolRegex.append("\\").append(signIterator.next());
         symbolRegex.append("().\\d]+");
         return !expr.matches(symbolRegex.toString());
+    }
+
+    private boolean isNumbersInvalid(String expr) {
+        String[] withoutNumbers = expr.split("\\d+(.\\d+)?");
+        for (String s : withoutNumbers) {
+            if (s.matches("[\\d.]*"))
+                return true;
+        }
+        return false;
     }
 
     private boolean isParenthesesInvalid(String expr) {
@@ -41,5 +51,27 @@ public class ValidatorImpl implements Validator {
                 return true;
         }
         return counter != 0;
+    }
+
+    private boolean isOperationsInvalid(String expr) {
+        char[] chars = expr.toCharArray();
+        int length = chars.length;
+
+        boolean isLastOperation = Operation.isOperation("" + chars[length - 1]);
+        if (isLastOperation)
+            return true;
+
+        boolean isFirstOperation = Operation.isOperation("" + chars[0]);
+        if (isFirstOperation && Operation.getBySign("" + chars[0]).getPriority() > 1)
+            return true;
+
+        for (int i = 1; i < length - 1; i++) {
+            boolean isCurrentOperation = Operation.isOperation("" + chars[i]);
+            boolean isLeftOperation = Operation.isOperation("" + chars[i - 1]);
+            boolean isRightOperation = Operation.isOperation("" + chars[i + 1]);
+            if (isCurrentOperation && (isLeftOperation || isRightOperation))
+                return true;
+        }
+        return false;
     }
 }
