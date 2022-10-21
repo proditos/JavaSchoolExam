@@ -1,11 +1,16 @@
 package calculator.impl;
 
-import calculator.StringIterator;
+import calculator.Operation;
 import calculator.api.Calculator;
+import calculator.api.Parser;
+import calculator.api.Validator;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * @author Vladislav Konovalov
@@ -13,116 +18,65 @@ import java.util.*;
 public class CalculatorImpl implements Calculator {
     @Override
     public String evaluate(String expr) {
-        if (expr == null) return null;
+        Validator validator = new ValidatorImpl();
+        if (!validator.isValid(expr))
+            return null;
 
-        expr = expr.replaceAll("^-", "0-");
-        expr = expr.replaceAll("^\\+", "0+");
-        expr = expr.replace("(-", "(0-");
-        expr = expr.replace("(+", "(0+");
+        Parser parser = new ParserImpl();
+        Iterator<Object> elementsIterator = parser.parse(expr).iterator();
+        Deque<Double> numbers = new LinkedList<>();
+        Deque<Object> operations = new LinkedList<>();
 
-        Deque<String> operationStack = new LinkedList<>();
-        Deque<String> numberStack = new LinkedList<>();
-        Iterator<String> iterator = new StringIterator(expr);
-
-        while (iterator.hasNext()) {
-            String element = iterator.next();
-            if (element == null) return null;
-
-            if (isNumber(element))
-                numberStack.push(element);
-            if (isOperation(element)) {
-                if (element.equals("(")) {
-                    operationStack.push(element);
-                } else if (element.equals(")")) {
-                    if (!"(".equals(operationStack.peek()))
-                        while (!"(".equals(operationStack.peek())) {
-                            try {
-                                double number2 = Double.parseDouble(numberStack.pop());
-                                double number1 = Double.parseDouble(numberStack.pop());
-                                double result = processOperation(number1, number2, operationStack.pop());
-                                if (Double.isNaN(result)) return null;
-                                numberStack.push(result + "");
-                            } catch (NoSuchElementException e) {
-                                return null;
-                            }
-                        }
-                    operationStack.pop();
-                } else if (operationStack.isEmpty() || getOperationPrecedence(operationStack.peek()) < getOperationPrecedence(element)) {
-                    operationStack.push(element);
+        while (elementsIterator.hasNext()) {
+            Object element = elementsIterator.next();
+            if (element instanceof Double) {
+                numbers.push((Double) element);
+            } else if ("(".equals(element)) {
+                operations.push(element);
+            } else if (")".equals(element)) {
+                while (!"(".equals(operations.peek())) {
+                    double number2 = numbers.pop();
+                    double number1 = numbers.pop();
+                    Operation operation = (Operation) operations.pop();
+                    double result = operation.eval(number1, number2);
+                    numbers.push(result);
+                }
+                operations.pop();
+            } else {
+                if (operations.isEmpty()) {
+                    operations.push(element);
                 } else {
-                    try {
-                        double number2 = Double.parseDouble(numberStack.pop());
-                        double number1 = Double.parseDouble(numberStack.pop());
-                        double result = processOperation(number1, number2, operationStack.pop());
-                        if (Double.isNaN(result)) return null;
-                        numberStack.push(result + "");
-                    } catch (NoSuchElementException e) {
-                        return null;
+                    Operation operation = (Operation) element;
+                    Operation previousOperation = (Operation) operations.peek();
+                    if (operation.getPriority() < previousOperation.getPriority()) {
+                        double number2 = numbers.pop();
+                        double number1 = numbers.pop();
+                        operations.pop();
+                        double result = previousOperation.eval(number1, number2);
+                        numbers.push(result);
                     }
-                    operationStack.push(element);
+                    operations.push(element);
                 }
             }
         }
 
-        if (numberStack.isEmpty()) return null;
-
-        while (numberStack.size() > 1) {
-            try {
-                double number2 = Double.parseDouble(numberStack.pop());
-                double number1 = Double.parseDouble(numberStack.pop());
-                double result = processOperation(number1, number2, operationStack.pop());
-                if (Double.isNaN(result)) return null;
-                numberStack.push(result + "");
-            } catch (NoSuchElementException e) {
-                return null;
-            }
+        while (numbers.size() > 1) {
+            double number2 = numbers.pop();
+            double number1 = numbers.pop();
+            Operation operation = (Operation) operations.pop();
+            double result = operation.eval(number1, number2);
+            numbers.push(result);
         }
 
-        if (!operationStack.isEmpty()) return null;
+        double result = numbers.pop();
+
+        if (Double.isNaN(result) || Double.isInfinite(result))
+            return null;
 
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.HALF_UP);
         df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.ENGLISH));
 
-        return df.format(Double.parseDouble(numberStack.pop()));
-    }
-
-    private boolean isNumber(String element) {
-        if (element == null) return false;
-        return element.substring(0, 1).matches("\\d");
-    }
-
-    private boolean isOperation(String element) {
-        if (element == null) return false;
-        return element.substring(0, 1).matches("[+\\-*/()]");
-    }
-
-    private int getOperationPrecedence(String operation) {
-        switch (operation) {
-            case "+":
-            case "-":
-                return 0;
-            case "*":
-            case "/":
-                return 1;
-            default:
-                return -1;
-        }
-    }
-
-    private double processOperation(double number1, double number2, String operation) {
-        switch (operation) {
-            case "+":
-                return number1 + number2;
-            case "-":
-                return number1 - number2;
-            case "*":
-                return number1 * number2;
-            case "/":
-                if (number2 == 0.0) return Double.NaN;
-                return number1 / number2;
-            default:
-                return Double.NaN;
-        }
+        return df.format(result);
     }
 }
