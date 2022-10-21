@@ -25,7 +25,7 @@ public class ParserImpl implements Parser {
                 result.add(Double.parseDouble(number));
                 editableExpr.delete(0, numberLength);
             } else {
-                result.add(element);
+                result.add("" + element);
                 editableExpr.deleteCharAt(0);
             }
         }
