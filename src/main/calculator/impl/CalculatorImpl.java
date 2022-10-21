@@ -45,10 +45,12 @@ public class CalculatorImpl implements Calculator {
             } else {
                 if (operations.isEmpty()) {
                     operations.push(element);
+                } else if ("(".equals(operations.peek())) {
+                    operations.push(element);
                 } else {
                     Operation operation = (Operation) element;
                     Operation previousOperation = (Operation) operations.peek();
-                    if (operation.getPriority() < previousOperation.getPriority()) {
+                    if (operation.getPriority() <= previousOperation.getPriority()) {
                         double number2 = numbers.pop();
                         double number1 = numbers.pop();
                         operations.pop();
