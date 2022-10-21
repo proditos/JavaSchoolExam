@@ -1,6 +1,6 @@
 package calculator.impl;
 
-import calculator.Operation;
+import calculator.common.Operation;
 import calculator.api.Calculator;
 import calculator.api.Parser;
 import calculator.api.Validator;

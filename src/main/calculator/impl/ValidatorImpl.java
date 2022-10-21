@@ -1,6 +1,6 @@
 package calculator.impl;
 
-import calculator.Operation;
+import calculator.common.Operation;
 import calculator.api.Validator;
 import java.util.Iterator;
 
