@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Vladislav Konovalov
  */
-public class PyramidBuilderTest {
+class PyramidBuilderTest {
     private final PyramidBuilder pyramidBuilder = new PyramidBuilder();
 
     @Test
-    public void buildPyramid0() {
+    void buildPyramid1() {
         List<Integer> input = Arrays.asList(1, 15, 2);
         int[][] expected = new int[][] {
                 {0, 1, 0},
@@ -27,7 +27,7 @@ public class PyramidBuilderTest {
     }
 
     @Test
-    public void buildPyramid() {
+    void buildPyramid2() {
         List<Integer> input = Arrays.asList(1, 3, 2, 9, 4, 5);
         int[][] expected = new int[][] {
                 {0, 0, 1, 0, 0},
@@ -41,7 +41,7 @@ public class PyramidBuilderTest {
     }
 
     @Test
-    public void buildPyramid3() {
+    void buildPyramid3() {
         List<Integer> input = Arrays.asList(1, 3, 2, 9, 4, 5, 10, 8, 7, 6);
         int[][] expected = new int[][] {
                 {0, 0, 0, 1, 0, 0, 0},
@@ -56,7 +56,7 @@ public class PyramidBuilderTest {
     }
 
     @Test
-    public void buildPyramid4() {
+    void buildPyramid4() {
         List<Integer> input = Arrays.asList(11, 1, 12, 3, 2, 13, 9, 4, 5, 14, 10, 8, 7, 15, 6);
         int[][] expected = new int[][] {
                 {0, 0, 0, 0, 1, 0, 0, 0, 0},
@@ -72,7 +72,7 @@ public class PyramidBuilderTest {
     }
 
     @Test
-    public void buildPyramid5() {
+    void buildPyramid5() {
         List<Integer> input = Arrays.asList(11, 1, 21, 12, 3, 16, 2, 13, 9, 4, 17, 5, 14, 10, 18, 8, 7, 19, 15, 6, 20);
         int[][] expected = new int[][] {
                 {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
@@ -89,47 +89,47 @@ public class PyramidBuilderTest {
     }
 
 
-    @Test(expected = CannotBuildPyramidException.class)
-    public void buildPyramid1() {
+    @Test
+    void buildPyramid6() {
         List<Integer> input = Arrays.asList(1, 3, 2, 9, 4, null);
 
-        int[][] pyramid = pyramidBuilder.buildPyramid(input);
+        assertThrows(CannotBuildPyramidException.class, () -> pyramidBuilder.buildPyramid(input));
     }
 
-    @Test(expected = CannotBuildPyramidException.class)
-    public void buildPyramid2() {
+    @Test
+    void buildPyramid7() {
         List<Integer> input = Arrays.asList(1, 3, 2, 9, 4, 5, null);
 
-        int[][] pyramid = pyramidBuilder.buildPyramid(input);
+        assertThrows(CannotBuildPyramidException.class, () -> pyramidBuilder.buildPyramid(input));
     }
 
-    @Test(expected = CannotBuildPyramidException.class)
-    public void buildPyramid6() {
+    @Test
+    void buildPyramid8() {
         List<Integer> input = new ArrayList<>();
         for (int i = 1; i < 256; i++)
             input.add(i);
 
-        int[][] pyramid = pyramidBuilder.buildPyramid(input);
+        assertThrows(CannotBuildPyramidException.class, () -> pyramidBuilder.buildPyramid(input));
     }
 
-    @Test(expected = CannotBuildPyramidException.class)
-    public void buildPyramid7() {
+    @Test
+    void buildPyramid9() {
         List<Integer> input = new ArrayList<>();
         for (int i = 1; i < 10000; i++)
             input.add(i);
 
-        int[][] pyramid = pyramidBuilder.buildPyramid(input);
-    }
-
-    @Test(expected = CannotBuildPyramidException.class)
-    public void buildPyramid8() {
-        List<Integer> input = Collections.nCopies(Integer.MAX_VALUE - 1, 0);
-
-        int[][] pyramid = pyramidBuilder.buildPyramid(input);
+        assertThrows(CannotBuildPyramidException.class, () -> pyramidBuilder.buildPyramid(input));
     }
 
     @Test
-    public void buildPyramid9() {
+    void buildPyramid10() {
+        List<Integer> input = Collections.nCopies(Integer.MAX_VALUE - 1, 0);
+
+        assertThrows(CannotBuildPyramidException.class, () -> pyramidBuilder.buildPyramid(input));
+    }
+
+    @Test
+    void buildPyramid11() {
         List<Integer> input = Arrays.asList(1, 3, 2, 0, 4, 5);
         int[][] expected = new int[][] {
                 {0, 0, 0, 0, 0},
@@ -143,9 +143,9 @@ public class PyramidBuilderTest {
     }
 
     private void comparePyramids(int[][] expected, int[][] pyramid) {
-        Assert.assertEquals("Amount of rows is different", expected.length, pyramid.length);
+        assertEquals(expected.length, pyramid.length);
         for (int i = 0; i < expected.length; i++) {
-            Assert.assertArrayEquals(expected[i], pyramid[i]);
+            assertArrayEquals(expected[i], pyramid[i]);
         }
     }
 }
