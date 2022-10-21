@@ -230,4 +230,44 @@ public class CalculatorTest {
 
         Assert.assertEquals(expectedResult, result);
     }
+
+    @Test
+    public void evaluate22() {
+        String input = "1.2.3";
+        String expectedResult = null;
+
+        String result = calculator.evaluate(input);
+
+        Assert.assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void evaluate23() {
+        String input = "-2";
+        String expectedResult = "-2";
+
+        String result = calculator.evaluate(input);
+
+        Assert.assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void evaluate24() {
+        String input = "1";
+        String expectedResult = "1";
+
+        String result = calculator.evaluate(input);
+
+        Assert.assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void evaluate25() {
+        String input = "1..2";
+        String expectedResult = null;
+
+        String result = calculator.evaluate(input);
+
+        Assert.assertEquals(expectedResult, result);
+    }
 }
