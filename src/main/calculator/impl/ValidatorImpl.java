@@ -28,7 +28,7 @@ public class ValidatorImpl implements Validator {
     }
 
     private boolean isNumbersInvalid(String expr) {
-        String[] withoutNumbers = expr.split("\\d+(.\\d+)?");
+        String[] withoutNumbers = expr.split("\\d+(\\.\\d+)?");
         for (String s : withoutNumbers) {
             if (s.matches("[\\d.]*"))
                 return true;
