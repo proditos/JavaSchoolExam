@@ -4,3 +4,4 @@ src/META-INF/
 !**/src/main/**/out/
 !**/src/test/**/out/
 *.iml
+*.jar
