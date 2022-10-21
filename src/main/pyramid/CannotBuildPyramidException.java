@@ -1,4 +1,3 @@
 package pyramid;
 
-public class CannotBuildPyramidException extends RuntimeException {
-}
+public class CannotBuildPyramidException extends RuntimeException {}
