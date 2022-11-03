@@ -15,7 +15,7 @@ class ValidatorTest {
     private final Validator validator = new ValidatorImpl();
 
     @ParameterizedTest
-    @ValueSource(strings = {"1", "-1", "1.2", "+1.0", "-10/(+2-7+3)*4", "+10/(((-2-7)+3)*4)", "1+1"})
+    @ValueSource(strings = {"1.", "-1", "1.2", "+1.0", "-10/(+2-7+3)*4", "+10/(((-2-7)+3)*4)", "1+1"})
     void itShouldReturnTrueForCorrectExpressions(String expr) {
         String message = "There should return true for correct expressions";
         assertTrue(validator.isValid(expr), message);
