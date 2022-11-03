@@ -19,8 +19,9 @@ public class CalculatorImpl implements Calculator {
     @Override
     public String evaluate(String expr) {
         Validator validator = new ValidatorImpl();
-        if (!validator.isValid(expr))
+        if (!validator.isValid(expr)) {
             return null;
+        }
 
         Parser parser = new ParserImpl();
         Iterator<Object> elementsIterator = parser.parse(expr).iterator();
@@ -72,8 +73,9 @@ public class CalculatorImpl implements Calculator {
 
         double result = numbers.pop();
 
-        if (Double.isNaN(result) || Double.isInfinite(result))
+        if (Double.isNaN(result) || Double.isInfinite(result)) {
             return null;
+        }
 
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.HALF_UP);

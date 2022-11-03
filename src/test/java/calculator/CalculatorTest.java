@@ -21,13 +21,15 @@ class CalculatorTest {
             "-1;-1", "+1;1", "1.0;1"}, delimiter = ';')
     void itShouldReturnCorrectResultOfExpression(String expr, String expected) {
         String result = calculator.evaluate(expr);
-        assertEquals(expected, result);
+        String message = "There should return correct calculation result";
+        assertEquals(expected, result, message);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"1/0", "-1/0", "0/(-0)"})
     void divideByZeroShouldReturnNull(String expr) {
         String result = calculator.evaluate(expr);
-        assertNull(result);
+        String message = "There should return null when dividing by zero";
+        assertNull(result, message);
     }
 }

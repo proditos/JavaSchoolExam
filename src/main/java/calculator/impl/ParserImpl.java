@@ -46,10 +46,12 @@ public class ParserImpl implements Parser {
         expr = expr.replace("(-", "(0-");
         expr = expr.replace("(+", "(0+");
         StringBuilder editableExpr = new StringBuilder(expr);
-        if (editableExpr.charAt(0) == '-')
+        if (editableExpr.charAt(0) == '-') {
             editableExpr.replace(0, 1, "0-");
-        else if (editableExpr.charAt(0) == '+')
+        }
+        if (editableExpr.charAt(0) == '+') {
             editableExpr.replace(0, 1, "0+");
+        }
         return editableExpr.toString();
     }
 }

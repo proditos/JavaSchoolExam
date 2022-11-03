@@ -37,9 +37,9 @@ public enum Operation {
         }
     };
 
+    private static final Map<String, Operation> OPERATION_MAP;
     private final String sign;
     private final int priority;
-    private static final Map<String, Operation> OPERATION_MAP;
 
     static {
         Map<String, Operation> map = new HashMap<>();

@@ -10,10 +10,18 @@ import java.util.Iterator;
 public class ValidatorImpl implements Validator {
     @Override
     public boolean isValid(String expr) {
-        if (expr == null || expr.isEmpty()) return false;
-        if (isSymbolsInvalid(expr)) return false;
-        if (isNumbersInvalid(expr)) return false;
-        if (isParenthesesInvalid(expr)) return false;
+        if (expr == null || expr.isEmpty()) {
+            return false;
+        }
+        if (isSymbolsInvalid(expr)) {
+            return false;
+        }
+        if (isNumbersInvalid(expr)) {
+            return false;
+        }
+        if (isParenthesesInvalid(expr)) {
+            return false;
+        }
         return !isOperationsInvalid(expr);
     }
 
@@ -21,8 +29,9 @@ public class ValidatorImpl implements Validator {
         Iterator<String> signIterator = Operation.getAllSigns().iterator();
         StringBuilder symbolRegex = new StringBuilder();
         symbolRegex.append("[");
-        while (signIterator.hasNext())
+        while (signIterator.hasNext()) {
             symbolRegex.append("\\").append(signIterator.next());
+        }
         symbolRegex.append("().\\d]+");
         return !expr.matches(symbolRegex.toString());
     }
@@ -42,18 +51,22 @@ public class ValidatorImpl implements Validator {
     }
 
     private boolean isParenthesesInvalid(String expr) {
-        if (expr.contains("()") || expr.contains(")("))
+        if (expr.contains("()") || expr.contains(")(")) {
             return true;
+        }
 
         char[] chars = expr.toCharArray();
         int counter = 0;
         for (char c : chars) {
-            if (c == '(')
+            if (c == '(') {
                 counter++;
-            else if (c == ')')
+            }
+            if (c == ')') {
                 counter--;
-            if (counter < 0)
+            }
+            if (counter < 0) {
                 return true;
+            }
         }
         return counter != 0;
     }
@@ -63,19 +76,22 @@ public class ValidatorImpl implements Validator {
         int length = chars.length;
 
         boolean isLastOperation = Operation.isOperation("" + chars[length - 1]);
-        if (isLastOperation)
+        if (isLastOperation) {
             return true;
+        }
 
         boolean isFirstOperation = Operation.isOperation("" + chars[0]);
-        if (isFirstOperation && Operation.getBySign("" + chars[0]).getPriority() > 1)
+        if (isFirstOperation && Operation.getBySign("" + chars[0]).getPriority() > 1) {
             return true;
+        }
 
         for (int i = 1; i < length - 1; i++) {
             boolean isCurrentOperation = Operation.isOperation("" + chars[i]);
             boolean isLeftOperation = Operation.isOperation("" + chars[i - 1]);
             boolean isRightOperation = Operation.isOperation("" + chars[i + 1]);
-            if (isCurrentOperation && (isLeftOperation || isRightOperation))
+            if (isCurrentOperation && (isLeftOperation || isRightOperation)) {
                 return true;
+            }
         }
         return false;
     }

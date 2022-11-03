@@ -9,11 +9,18 @@ import java.util.List;
  */
 public class PyramidBuilder {
     public int[][] buildPyramid(List<Integer> input) {
-        if (input == null) throw new CannotBuildPyramidException();
-        for (Integer integer : input)
-            if (integer == null) throw new CannotBuildPyramidException();
+        if (input == null) {
+            throw new CannotBuildPyramidException();
+        }
+        for (Integer integer : input) {
+            if (integer == null) {
+                throw new CannotBuildPyramidException();
+            }
+        }
         int inputSize = input.size();
-        if (!isTriangular(inputSize)) throw new CannotBuildPyramidException();
+        if (!isTriangular(inputSize)) {
+            throw new CannotBuildPyramidException();
+        }
 
         Collections.sort(input);
         Iterator<Integer> inputIterator = input.listIterator();
@@ -34,7 +41,7 @@ public class PyramidBuilder {
     private boolean isTriangular(int number) {
         number = 8 * number + 1;
         int tmp = (int) Math.sqrt(number);
-        return Math.pow(tmp, 2) == number;
+        return ((int) Math.pow(tmp, 2)) == number;
     }
 
     private int getTriangularOrderNumber(int number) {

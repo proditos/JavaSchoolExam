@@ -7,9 +7,6 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author Vladislav Konovalov
- */
 class SubsequenceTest {
     private final Subsequence subsequence = new SubsequenceImpl();
 
