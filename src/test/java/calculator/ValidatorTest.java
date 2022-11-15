@@ -31,7 +31,7 @@ class ValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"+", "*", ".", "(", ")", "()", "*1+2", "1+.2", ".1", "1+2.", "1..2+3",
             "1.23.4+5", "1++2", "(1+2)(3+4)", "1 + 2", "1+2,3", "(1*(2+3)", "1+2+", "1*(2+3))"})
-    void isShouldReturnFalseForIncorrectExpressions(String expr) {
+    void itShouldReturnFalseForIncorrectExpressions(String expr) {
         String message = "There should return false for incorrect expressions";
         assertFalse(validator.isValid(expr), message);
     }
